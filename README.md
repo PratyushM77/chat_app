@@ -46,7 +46,7 @@ chat_app/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   ├── pages/
+│   │   ├── public/
 │   │   ├── App.jsx
 │   │   └── ...
 ├── .gitignore
