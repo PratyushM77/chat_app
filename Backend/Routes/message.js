@@ -1,8 +1,8 @@
 const express = require("express");
-const  AuthenticateUser  = require("../Auth/Userauth");
+const AuthenticateUser = require("../Auth/Userauth");
 const Conversation = require("../Model/conversationModel");
 const Message = require("../Model/messageModel");
-const { getReceiverSocketId,io } = require("../socket/socket");
+const { getReceiverSocketId, io } = require("../socket/socket");
 const router = express.Router();
 
 router.post("/send/:id", AuthenticateUser, async (req, res) => {
@@ -30,18 +30,19 @@ router.post("/send/:id", AuthenticateUser, async (req, res) => {
       gotConversation.messages.push(newMessage._id);
     }
     await Promise.all([gotConversation.save(), newMessage.save()]);
-const senderSocketId = getReceiverSocketId(senderId);
-    const receiverSocketId = getReceiverSocketId(receiverId)
-     console.log("receiverSocketId:", receiverSocketId);
-    if(receiverSocketId){
-      io.to(receiverSocketId).emit("newMessage",newMessage)
+
+    const senderSocketId = getReceiverSocketId(senderId);
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    console.log("receiverSocketId:", receiverSocketId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
       console.log("Emitted to receiver:", newMessage);
     }
 
-if (senderSocketId) {
-  io.to(senderSocketId).emit("newMessage", newMessage);
-  console.log("Emitted to sender:", newMessage);
-}
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("newMessage", newMessage);
+      console.log("Emitted to sender:", newMessage);
+    }
 
     return res.status(200).json({ newMessage });
   } catch (error) {
@@ -49,16 +50,16 @@ if (senderSocketId) {
   }
 });
 
-
-router.get("/get/:id" , AuthenticateUser , async (req,res)=>{
-  const senderId = req.id
-  const receiverId = req.params.id
+router.get("/get/:id", AuthenticateUser, async (req, res) => {
+  const senderId = req.id;
+  const receiverId = req.params.id;
   try {
-    const coversations = await Conversation.findOne({participants:{$all :[senderId,receiverId]},}).populate("messages")
-    res.status(200).send(coversations?.messages)
+    const coversations = await Conversation.findOne({
+      participants: { $all: [senderId, receiverId] },
+    }).populate("messages");
+    res.status(200).send(coversations?.messages);
   } catch (error) {
     console.error(error);
-    
   }
-})
-module.exports = router
+});
+module.exports = router;

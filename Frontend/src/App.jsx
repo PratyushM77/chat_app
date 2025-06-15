@@ -8,6 +8,7 @@ import './App.css'
 import Navbar from './Navbar'
 import Chat from './Components/Chat'
 import { UserContext } from './Components/UserContext'
+import ProtectedRouteForAuth from './Components/ProtectedRouteforAuth'
 function App() {
   const [user, setUser] = useState(null)
 
@@ -17,9 +18,10 @@ function App() {
       <Navbar/>
     
     <Routes>
-       <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+       <Route path="/" element={<ProtectedRouteForAuth><Login /></ProtectedRouteForAuth>} />
+       
+          <Route path="/login" element={<ProtectedRouteForAuth><Login /></ProtectedRouteForAuth>} />
+          <Route path="/register" element={<ProtectedRouteForAuth><Register /></ProtectedRouteForAuth>} />
           <Route path = "/chat" element={<Chat/>}/>
       </Routes>
       <ToastContainer/> 
