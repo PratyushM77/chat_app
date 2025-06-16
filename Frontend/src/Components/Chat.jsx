@@ -89,10 +89,13 @@ function Chat() {
   const handleselect = async (element) => {
     setSelectedUser(element);
     try {
-      const response = await fetch(`http://localhost:3000/get/${element?._id}`, {
-        credentials: "include",
-        method: "GET",
-      });
+      const response = await fetch(
+        `http://localhost:3000/get/${element?._id}`,
+        {
+          credentials: "include",
+          method: "GET",
+        }
+      );
       const result = await response.json();
       if (response.ok) {
         setShowMessages(result);
@@ -135,7 +138,8 @@ function Chat() {
     }
   };
 
-  const isUserOnline = (id) => onlineUsers?.some((userId) => userId.toString() === id?.toString());
+  const isUserOnline = (id) =>
+    onlineUsers?.some((userId) => userId.toString() === id?.toString());
 
   return (
     <div className="container mx-auto shadow-2xl rounded-xl h-screen flex flex-col bg-gradient-to-br from-yellow-100 to-orange-200">
@@ -160,7 +164,9 @@ function Chat() {
                   onClick={() => handleselect(u)}
                   className="cursor-pointer p-4 hover:bg-orange-100 transition flex flex-col gap-1 border-b"
                 >
-                  <div className="font-semibold text-lg text-gray-800">{u.name}</div>
+                  <div className="font-semibold text-lg text-gray-800">
+                    {u.name}
+                  </div>
                   <div className="flex items-center gap-2">
                     <div
                       className={`w-2 h-2 rounded-full ${
@@ -186,7 +192,9 @@ function Chat() {
               <div className="flex items-center gap-2">
                 <div
                   className={`w-2 h-2 rounded-full ${
-                    isUserOnline(selectedUser._id) ? "bg-green-500" : "bg-gray-400"
+                    isUserOnline(selectedUser._id)
+                      ? "bg-green-500"
+                      : "bg-gray-400"
                   }`}
                 ></div>
                 <span className="text-sm text-gray-600">
@@ -222,7 +230,7 @@ function Chat() {
                 );
               })}
             </div>
-
+            <form onSubmit={handleSendMessage}>
             <div className="py-4 px-6 bg-white border-t shadow-md">
               <div className="relative flex items-center">
                 <input
@@ -235,12 +243,13 @@ function Chat() {
                 />
                 <button
                   className="absolute right-4 top-1/2 transform -translate-y-1/2 text-2xl text-blue-600 hover:text-blue-800"
-                  onClick={handleSendMessage}
+                  type="submit"
                 >
                   ➤
                 </button>
               </div>
             </div>
+            </form>
           </div>
         )}
       </div>

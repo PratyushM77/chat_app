@@ -71,6 +71,7 @@ cd backend
 npm install
 
 # Create a .env file with the following:
+Visit server.js , db.js , Userauth.js
 PORT=3000
 MONGO_URI=your_mongodb_url
 JWT_SECRET=your_jwt_secret
